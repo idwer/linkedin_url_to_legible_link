@@ -7,7 +7,7 @@ pub fn decode_linkedin_url(url: &str) -> String {
 
     match d {
         Cow::Borrowed(e) => {
-            return e.to_string()
+            e.to_string()
         },
 
         Cow::Owned(ref e) => {
@@ -31,7 +31,7 @@ pub fn decode_linkedin_url(url: &str) -> String {
 			}
 		}
 		
-		return e.to_string()
+		e.to_string()
         },
     }
 }
