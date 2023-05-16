@@ -35,3 +35,16 @@ pub fn decode_linkedin_url(url: &str) -> String {
         },
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_decode_linkedin_url() {
+        let url_to_decode = "https://www.linkedin.com/safety/go?url=https%3A%2F%2Fnos.nl%2F&trk=flagship-messaging-web&messageThreadUrn=urn%3Ali%3AmessagingThread%3A_redacted_hash%3D%3D&lipi=urn%3Ali%3Apage%3Ad_flagship3_messaging_conversation_detail%3B_faux_content%3D%3D";
+        let url = decode_linkedin_url(url_to_decode);
+
+        assert_eq!(url, "https://nos.nl/");
+    }
+}
