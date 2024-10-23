@@ -9,7 +9,7 @@ fn main() {
     let url = &args[1];
     
     if !url.starts_with("https://www.linkedin.com/safety/go?url=http") {
-	    println!("not a suitable link (does not start with 'https://www.linkedin.com/safety/go?url=http'), exiting");
+	    println!("Not a suitable link (does not start with 'https://www.linkedin.com/safety/go?url=http'), exiting");
 
 	    std::process::exit(0);
     }    
