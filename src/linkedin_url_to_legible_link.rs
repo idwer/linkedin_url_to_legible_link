@@ -3,16 +3,13 @@ use urlencoding::decode;
 pub fn decode_linkedin_url(url: &str) -> Option<String> {
     let result_cow_from_decode = decode(url);
 
-    match result_cow_from_decode {
-        Ok(o) => {
-            let o_split = o.split("go?url=");
-            let intermediate_split_elements = o_split.collect::<Vec<_>>();
-            let intermediate_url = intermediate_split_elements[1];
-            let split_elements = intermediate_url.split("&trk").collect::<Vec<_>>();
+    if let Ok(o) = result_cow_from_decode {
+        let o_split = o.split("go?url=");
+        let intermediate_split_elements = o_split.collect::<Vec<_>>();
+        let intermediate_url = intermediate_split_elements[1];
+        let split_elements = intermediate_url.split("&trk").collect::<Vec<_>>();
 
-            return Some(split_elements[0].to_string())
-        },
-        _ => (),
+        return Some(split_elements[0].to_string())
     }
 
     None
@@ -29,11 +26,8 @@ mod tests {
 
         let mut actual_url = String::new();
 
-        match option_intermediate_url {
-            Some(s) => {
-                actual_url = s;
-            },
-            None => (),
+        if let Some(s) = option_intermediate_url {
+            actual_url = s;
         }
 
         assert_eq!(actual_url, "https://nos.nl/");

@@ -14,8 +14,5 @@ fn main() {
 	    std::process::exit(0);
     }    
 
-    match decode_linkedin_url(url) {
-        Some(s) => println!("The actual URL is: {}", s),
-        _ => (),
-    }
+    if let Some(s) = decode_linkedin_url(url) { println!("The actual URL is: {}", s) }
 }
