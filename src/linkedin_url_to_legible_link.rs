@@ -1,39 +1,21 @@
-use std::{borrow::Cow};
-
 use urlencoding::decode;
 
-pub fn decode_linkedin_url(url: &str) -> String {
-    let d = decode(url).expect("");
+pub fn decode_linkedin_url(url: &str) -> Option<String> {
+    let result_cow_from_decode = decode(url);
 
-    match d {
-        Cow::Borrowed(e) => {
-            e.to_string()
+    match result_cow_from_decode {
+        Ok(o) => {
+            let o_split = o.split("go?url=");
+            let intermediate_split_elements = o_split.collect::<Vec<_>>();
+            let intermediate_url = intermediate_split_elements[1];
+            let split_elements = intermediate_url.split("&trk").collect::<Vec<_>>();
+
+            return Some(split_elements[0].to_string())
         },
-
-        Cow::Owned(ref e) => {
-		let f = e.split_once('?');
-		
-		match f {
-			None => (),
-			Some(some) => {
-				let s = some.1;
-				let t: Vec<&str> = s.split("url=").collect();
-
-				if t[1].contains("&trk=") {
-					let u: Vec<&str> = t[1].split("&trk=").collect();
-					return u[0].to_string();
-				}			
-
-				if t[1].contains("&vjs=") {
-					let u: Vec<&str> = t[1].split("&vjs=").collect();
-					return u[0].to_string();
-				}
-			}
-		}
-		
-		e.to_string()
-        },
+        _ => (),
     }
+
+    None
 }
 
 #[cfg(test)]
