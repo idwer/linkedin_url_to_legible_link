@@ -25,8 +25,17 @@ mod tests {
     #[test]
     fn test_decode_linkedin_url() {
         let url_to_decode = "https://www.linkedin.com/safety/go?url=https%3A%2F%2Fnos.nl%2F&trk=flagship-messaging-web&messageThreadUrn=urn%3Ali%3AmessagingThread%3A_redacted_hash%3D%3D&lipi=urn%3Ali%3Apage%3Ad_flagship3_messaging_conversation_detail%3B_faux_content%3D%3D";
-        let url = decode_linkedin_url(url_to_decode);
+        let option_intermediate_url = decode_linkedin_url(url_to_decode);
 
-        assert_eq!(url, "https://nos.nl/");
+        let mut actual_url = String::new();
+
+        match option_intermediate_url {
+            Some(s) => {
+                actual_url = s;
+            },
+            None => (),
+        }
+
+        assert_eq!(actual_url, "https://nos.nl/");
     }
 }
