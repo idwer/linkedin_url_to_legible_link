@@ -15,6 +15,6 @@ fn main() {
     }
 
     if let Some(s) = decode_linkedin_url(url) {
-        println!("The actual URL is: {}", s)
+        println!("The actual URL is: {s}")
     }
 }
