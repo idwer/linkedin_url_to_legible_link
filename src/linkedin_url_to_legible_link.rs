@@ -4,16 +4,25 @@ pub fn linkedin_url_is_invalid(url: &str) -> bool {
     return !url.starts_with("https://www.linkedin.com/safety/go?url=http")
 }
 
+fn split_url_crude(url: &str) -> Vec<&str> {
+    return url.split('&').collect::<Vec<_>>();
+}
+
+fn split_url_fine(url: &str) -> Vec<&str> {
+    return url.split("go?url=").collect::<Vec<_>>();
+}
+
 pub fn decode_linkedin_url(url: &str) -> Option<String> {
     let result_cow_from_decode = decode(url);
 
-    if let Ok(o) = result_cow_from_decode {
-        let o_split = o.split("go?url=");
-        let intermediate_split_elements = o_split.collect::<Vec<_>>();
-        let intermediate_url = intermediate_split_elements[1];
-        let split_elements = intermediate_url.split("&trk").collect::<Vec<_>>();
+    if let Ok(decoded_url) = result_cow_from_decode {
+        let vec_crude = split_url_crude(&decoded_url);
+        let url_crude = vec_crude[0];
 
-        return Some(split_elements[0].to_string())
+        let vec_fine = split_url_fine(url_crude);
+        let url_fine = vec_fine[1];
+
+        return Some(url_fine.to_string())
     }
 
     None
@@ -29,6 +38,22 @@ mod tests {
         let result = linkedin_url_is_invalid(url);
 
         assert_eq!(result, false);
+    }
+
+    #[test]
+    fn test_split_url_crude() {
+        let url_to_decode = "https://www.linkedin.com/safety/go?url=https://nos.nl/&trk=flagship-messaging-web&messageThreadUrn=urn:li:messagingThread:_redacted_hash==&lipi=urn:li:page:d_flagship3_messaging_conversation_detail;_faux_content==";
+        let actual_url = split_url_crude(url_to_decode);
+
+        assert_eq!(actual_url, ["https://www.linkedin.com/safety/go?url=https://nos.nl/", "trk=flagship-messaging-web", "messageThreadUrn=urn:li:messagingThread:_redacted_hash==", "lipi=urn:li:page:d_flagship3_messaging_conversation_detail;_faux_content=="]);
+    }
+
+    #[test]
+    fn test_split_url_fine() {
+        let url_to_decode = "https://www.linkedin.com/safety/go?url=https://nos.nl/";
+        let actual_url = split_url_fine(url_to_decode);
+
+        assert_eq!(actual_url, ["https://www.linkedin.com/safety/", "https://nos.nl/"]);
     }
 
     #[test]
