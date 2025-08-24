@@ -1,7 +1,7 @@
 use urlencoding::decode;
 
 pub fn linkedin_url_is_invalid(url: &str) -> bool {
-    return !url.starts_with("https://www.linkedin.com/safety/go?url=http")
+    return !url.starts_with("https://www.linkedin.com/safety/go?url=http");
 }
 
 fn split_url_crude(url: &str) -> Vec<&str> {
@@ -22,7 +22,7 @@ pub fn decode_linkedin_url(url: &str) -> Option<String> {
         let vec_fine = split_url_fine(url_crude);
         let url_fine = vec_fine[1];
 
-        return Some(url_fine.to_string())
+        return Some(url_fine.to_string());
     }
 
     None
@@ -45,7 +45,15 @@ mod tests {
         let url_to_decode = "https://www.linkedin.com/safety/go?url=https://nos.nl/&trk=flagship-messaging-web&messageThreadUrn=urn:li:messagingThread:_redacted_hash==&lipi=urn:li:page:d_flagship3_messaging_conversation_detail;_faux_content==";
         let actual_url = split_url_crude(url_to_decode);
 
-        assert_eq!(actual_url, ["https://www.linkedin.com/safety/go?url=https://nos.nl/", "trk=flagship-messaging-web", "messageThreadUrn=urn:li:messagingThread:_redacted_hash==", "lipi=urn:li:page:d_flagship3_messaging_conversation_detail;_faux_content=="]);
+        assert_eq!(
+            actual_url,
+            [
+                "https://www.linkedin.com/safety/go?url=https://nos.nl/",
+                "trk=flagship-messaging-web",
+                "messageThreadUrn=urn:li:messagingThread:_redacted_hash==",
+                "lipi=urn:li:page:d_flagship3_messaging_conversation_detail;_faux_content=="
+            ]
+        );
     }
 
     #[test]
@@ -53,7 +61,10 @@ mod tests {
         let url_to_decode = "https://www.linkedin.com/safety/go?url=https://nos.nl/";
         let actual_url = split_url_fine(url_to_decode);
 
-        assert_eq!(actual_url, ["https://www.linkedin.com/safety/", "https://nos.nl/"]);
+        assert_eq!(
+            actual_url,
+            ["https://www.linkedin.com/safety/", "https://nos.nl/"]
+        );
     }
 
     #[test]
