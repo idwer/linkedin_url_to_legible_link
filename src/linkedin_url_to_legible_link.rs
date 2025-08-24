@@ -1,5 +1,9 @@
 use urlencoding::decode;
 
+pub fn linkedin_url_is_invalid(url: &str) -> bool {
+    return !url.starts_with("https://www.linkedin.com/safety/go?url=http")
+}
+
 pub fn decode_linkedin_url(url: &str) -> Option<String> {
     let result_cow_from_decode = decode(url);
 
@@ -18,6 +22,14 @@ pub fn decode_linkedin_url(url: &str) -> Option<String> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn test_linkedin_url_is_valid() {
+        let url = "https://www.linkedin.com/safety/go?url=https://nos.nl/&trk=flagship-messaging-web&messageThreadUrn=urn:li:messagingThread:_redacted_hash==&lipi=urn:li:page:d_flagship3_messaging_conversation_detail;_faux_content==";
+        let result = linkedin_url_is_invalid(url);
+
+        assert_eq!(result, false);
+    }
 
     #[test]
     fn test_decode_linkedin_url() {
