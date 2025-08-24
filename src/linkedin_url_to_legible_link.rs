@@ -1,15 +1,15 @@
 use urlencoding::decode;
 
 pub fn linkedin_url_is_invalid(url: &str) -> bool {
-    return !url.starts_with("https://www.linkedin.com/safety/go?url=http");
+    !url.starts_with("https://www.linkedin.com/safety/go?url=http")
 }
 
 fn split_url_crude(url: &str) -> Vec<&str> {
-    return url.split('&').collect::<Vec<_>>();
+    url.split('&').collect::<Vec<_>>()
 }
 
 fn split_url_fine(url: &str) -> Vec<&str> {
-    return url.split("go?url=").collect::<Vec<_>>();
+    url.split("go?url=").collect::<Vec<_>>()
 }
 
 pub fn decode_linkedin_url(url: &str) -> Option<String> {
@@ -37,7 +37,7 @@ mod tests {
         let url = "https://www.linkedin.com/safety/go?url=https://nos.nl/&trk=flagship-messaging-web&messageThreadUrn=urn:li:messagingThread:_redacted_hash==&lipi=urn:li:page:d_flagship3_messaging_conversation_detail;_faux_content==";
         let result = linkedin_url_is_invalid(url);
 
-        assert_eq!(result, false);
+        assert!(!result);
     }
 
     #[test]
