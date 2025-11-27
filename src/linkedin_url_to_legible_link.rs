@@ -1,7 +1,7 @@
 use urlencoding::decode;
 
-pub fn linkedin_url_is_invalid(url: &str) -> bool {
-    !url.starts_with("https://www.linkedin.com/safety/go?url=http")
+pub fn linkedin_url_is_valid(url: &str) -> bool {
+    url.starts_with("https://www.linkedin.com/safety/go?url=http")
 }
 
 fn split_url_crude(url: &str) -> Vec<&str> {
@@ -35,9 +35,9 @@ mod tests {
     #[test]
     fn test_linkedin_url_is_valid() {
         let url = "https://www.linkedin.com/safety/go?url=https://nos.nl/&trk=flagship-messaging-web&messageThreadUrn=urn:li:messagingThread:_redacted_hash==&lipi=urn:li:page:d_flagship3_messaging_conversation_detail;_faux_content==";
-        let result = linkedin_url_is_invalid(url);
+        let result = linkedin_url_is_valid(url);
 
-        assert!(!result);
+        assert!(result);
     }
 
     #[test]
