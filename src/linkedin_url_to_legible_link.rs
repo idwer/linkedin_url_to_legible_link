@@ -41,6 +41,14 @@ mod tests {
     }
 
     #[test]
+    fn test_linkedin_url_is_invalid() {
+        let url = "https://nos.nl/";
+        let result = linkedin_url_is_valid(url);
+
+        assert!(!result);
+    }
+
+    #[test]
     fn test_split_url_crude() {
         let url_to_decode = "https://www.linkedin.com/safety/go?url=https://nos.nl/&trk=flagship-messaging-web&messageThreadUrn=urn:li:messagingThread:_redacted_hash==&lipi=urn:li:page:d_flagship3_messaging_conversation_detail;_faux_content==";
         let actual_url = split_url_crude(url_to_decode);
